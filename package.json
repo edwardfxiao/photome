@@ -1,0 +1,39 @@
+{
+  "name": "photome",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardfxiao/photome.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bin": {
+    "photome": "bin/cli.js"
+  },
+  "bugs": {
+    "url": "https://github.com/edwardfxiao/photome/issues"
+  },
+  "homepage": "https://github.com/edwardfxiao/photome#readme",
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
+    "babel-eslint": "^10.1.0",
+    "chai": "^4.2.0",
+    "eslint": "^7.17.0",
+    "eslint-plugin-babel": "^5.3.1",
+    "mocha": "^8.2.1"
+  },
+  "dependencies": {
+    "boxen": "^5.0.1",
+    "chalk": "^4.1.2",
+    "klaw-sync": "^6.0.0",
+    "ramda": "^0.28.0",
+    "shelljs": "^0.8.4",
+    "yargs": "^17.1.1"
+  }
+}
