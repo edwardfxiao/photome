@@ -1,5 +1,6 @@
 const klawSync = require('klaw-sync');
 const fs = require('fs');
+const { exec } = require('child_process');
 const chalk = require('chalk');
 const boxen = require('boxen');
 const log = chalk.bold.hex('#ffffff');
@@ -16,6 +17,13 @@ const boxenOptionsError = {
   borderColor: '#c75454',
   backgroundColor: '#c75454',
 };
+const handleExec = cmd =>
+  new Promise((resolve, reject) => {
+    exec(cmd, (err, stdout) => {
+      if (err) reject(err);
+      else resolve(stdout);
+    });
+  });
 const renderMyLog = msg => boxen(log(msg), boxenOptionsLog);
 const renderMyError = msg => boxen(error(msg), boxenOptionsError);
 const getFiles = pathName => {
@@ -36,12 +44,9 @@ const clean = async props => {
   const { directory } = props;
   const dir = directory || process.cwd();
   const files = getFiles(dir);
+  console.log(files)
   await handleDeletingAndConverting(files);
-  console.log(renderMyLog('Syncing Successfully!'));
-  console.log(fileNamesHash);
-  // handle rename srt file
-  await handleSubRenaming(renamedFiles, fileNamesHash);
-  console.log(renderMyLog('Formatted Successfully!'));
+  console.log(renderMyLog('Synced Successfully!'));
 };
 
 const RAW_FORMAT = '.CR3';

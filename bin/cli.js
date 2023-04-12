@@ -3,7 +3,7 @@ const { clean } = require('../src/main/index.js');
 const R = require('ramda');
 const yargs = require('yargs');
 yargs
-  .command('', 'clean', v => {
+  .command('clean', 'clean', v => {
     const { directory } = v.argv;
     clean({ directory });
   })
