@@ -79,6 +79,9 @@ const handleDeletingAndConverting = async files => {
   }
 
   for (const fileName in jpgHash) {
+    if (fileName.toLowerCase().includes('copy')) {
+      continue;
+    }
     if (!cr3Hash[fileName]) {
       try {
         await handleExec(`rm '${jpgHash[fileName]}'`);

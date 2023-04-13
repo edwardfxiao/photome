@@ -26,4 +26,10 @@ describe('clean', () => {
     // to equal shallow comparison
     expect(result.jpgHash).to.eql({ IMG_0001: 'IMG_0001.JPG', IMG_0002: 'IMG_0002.JPG', IMG_0003: 'IMG_0003.JPG' });
   });
+  it("don't do anything to a jpeg file with a name 'copy' in it", async () => {
+    const files = ['IMG_0001 copy.JPG', 'IMG_0002.CR3', 'IMG_0002.JPG', 'IMG_0003.JPG'];
+    const result = await handleDeletingAndConverting(files);
+    // to equal shallow comparison
+    expect(result.jpgHash).to.eql({ 'IMG_0001 copy': 'IMG_0001 copy.JPG', IMG_0002: 'IMG_0002.JPG' });
+  });
 });
