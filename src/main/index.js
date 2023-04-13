@@ -44,61 +44,65 @@ const clean = async props => {
   const { directory } = props;
   const dir = directory || process.cwd();
   const files = getFiles(dir);
-  console.log(files)
   await handleDeletingAndConverting(files);
-  console.log(renderMyLog('Synced Successfully!'));
 };
 
 const RAW_FORMAT = '.CR3';
 const JPG_FORMAT = '.JPG';
+const HEIC_FORMAT = '.HEIC';
 
 const handleDeletingAndConverting = async files => {
-  //get files with the extension .jpg and store it in a hash and get files with the extension .cr3 and store it in another hash
-  //loop through the hash of .jpg files and check if the file name is in the hash of .cr3 files
   const cr3Hash = {};
   const jpgHash = {};
+  const heicHash = {};
+
   for (const file of files) {
     const [fileName, ext] = getFileName(file);
-    if (ext === RAW_FORMAT) {
+
+    if (ext.toLowerCase() === RAW_FORMAT.toLowerCase()) {
       cr3Hash[fileName] = file;
-    } else if (ext === JPG_FORMAT) {
+    } else if (ext.toLowerCase() === JPG_FORMAT.toLowerCase()) {
       jpgHash[fileName] = file;
+    } else if (ext.toLowerCase() === HEIC_FORMAT.toLowerCase()) {
+      heicHash[fileName] = file;
     }
   }
-  //loop through the hash of .jpg files and check if the file name is in the hash of .cr3 files,
-  //if not then delete the file
-  for (const file of files) {
-    const [fileName, ext] = getFileName(file);
-    if (ext === JPG_FORMAT) {
-      if (!cr3Hash[fileName]) {
-        //delete the file using noejs js
-        await handleExec(`rm '${file}'`);
-        // fs.unlink(file, err => {
-        //   if (err) {
-        //     console.error(err);
-        //     return;
-        //   }
-        //   console.log(`${file} was deleted`);
-        // });
-      } else {
-        const quickActionName = 'convert2Heic';
-        // Use the "automator" command to run the Quick Action on the file
-        const command = `automator -i "${file}" ~/Library/Services/"${quickActionName}".workflow`;
-        try {
-          exec(command, (error, stdout, stderr) => {
-            if (error) {
-              console.error(`exec error: ${error}`);
-              return;
-            }
-            console.log(`stdout: ${stdout}`);
-            console.error(`stderr: ${stderr}`);
-          });
-        } catch (e) {}
+
+  if (Object.keys(heicHash).length > 0) {
+    console.log(renderMyLog('Nothing changed because it has heic file and it seems it has already been cleaned before!'));
+    return { cr3Hash, jpgHash, heicHash };
+  }
+
+  for (const fileName in jpgHash) {
+    if (!cr3Hash[fileName]) {
+      try {
+        await handleExec(`rm '${jpgHash[fileName]}'`);
+      } catch (e) {
+        console.log(renderMyError(e));
       }
+      delete jpgHash[fileName];
+    } else {
+      heicHash[fileName] = jpgHash[fileName].replace(JPG_FORMAT, HEIC_FORMAT.toLocaleLowerCase());
+      const quickActionName = 'convert2Heic';
+      const command = `automator -i "${jpgHash[fileName]}" ~/Library/Services/"${quickActionName}".workflow`;
+      try {
+        exec(command, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`exec error: ${error}`);
+            return;
+          }
+          console.log(`stdout: ${stdout}`);
+          console.error(`stderr: ${stderr}`);
+        });
+      } catch (e) {}
     }
   }
+
+  console.log(renderMyLog('Synced Successfully!'));
+  return { cr3Hash, jpgHash, heicHash };
 };
 
 module.exports = {
   clean,
+  handleDeletingAndConverting,
 };
