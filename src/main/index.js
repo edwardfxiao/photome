@@ -68,6 +68,11 @@ const handleDeletingAndConverting = async files => {
     }
   }
 
+  if (Object.keys(cr3Hash).length === 0) {
+    console.log(renderMyLog('Nothing changed because it has no cr3 file!'));
+    return { cr3Hash, jpgHash, heicHash };
+  }
+
   if (Object.keys(heicHash).length > 0) {
     console.log(renderMyLog('Nothing changed because it has heic file and it seems it has already been cleaned before!'));
     return { cr3Hash, jpgHash, heicHash };

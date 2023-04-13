@@ -20,4 +20,10 @@ describe('clean', () => {
     // to equal shallow comparison
     expect(result.heicHash).to.eql({ IMG_0002: 'IMG_0002.heic' });
   });
+  it("don't do anything if there is no cr3 file", async () => {
+    const files = ['IMG_0001.JPG', 'IMG_0002.JPG', 'IMG_0003.JPG'];
+    const result = await handleDeletingAndConverting(files);
+    // to equal shallow comparison
+    expect(result.jpgHash).to.eql({ IMG_0001: 'IMG_0001.JPG', IMG_0002: 'IMG_0002.JPG', IMG_0003: 'IMG_0003.JPG' });
+  });
 });
