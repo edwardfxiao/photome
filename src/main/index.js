@@ -90,19 +90,19 @@ const handleDeletingAndConverting = async files => {
       }
       delete jpgHash[fileName];
     } else {
-      heicHash[fileName] = jpgHash[fileName].replace(JPG_FORMAT, HEIC_FORMAT.toLocaleLowerCase());
-      const quickActionName = 'convert2Heic';
-      const command = `automator -i "${jpgHash[fileName]}" ~/Library/Services/"${quickActionName}".workflow`;
-      try {
-        exec(command, (error, stdout, stderr) => {
-          if (error) {
-            console.error(`exec error: ${error}`);
-            return;
-          }
-          console.log(`stdout: ${stdout}`);
-          console.error(`stderr: ${stderr}`);
-        });
-      } catch (e) {}
+      // heicHash[fileName] = jpgHash[fileName].replace(JPG_FORMAT, HEIC_FORMAT.toLocaleLowerCase());
+      // const quickActionName = 'convert2Heic';
+      // const command = `automator -i "${jpgHash[fileName]}" ~/Library/Services/"${quickActionName}".workflow`;
+      // try {
+      //   exec(command, (error, stdout, stderr) => {
+      //     if (error) {
+      //       console.error(`exec error: ${error}`);
+      //       return;
+      //     }
+      //     console.log(`stdout: ${stdout}`);
+      //     console.error(`stderr: ${stderr}`);
+      //   });
+      // } catch (e) {}
     }
   }
 
