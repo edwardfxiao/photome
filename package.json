@@ -23,6 +23,7 @@
   "homepage": "https://github.com/edwardfxiao/photome#readme",
   "devDependencies": {
     "@babel/core": "^7.15.0",
+    "@babel/eslint-parser": "^7.24.7",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "@babel/register": "^7.12.10",
